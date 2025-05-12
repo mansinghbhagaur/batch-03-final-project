@@ -84,8 +84,6 @@ export default function Drawers() {
                         </DrawerHeader>
                         <Divider />
                         <Sidebar />
-
-                        <Divider />
                   </Drawer>
                   <Main open={open}>
                         <DrawerHeader />
