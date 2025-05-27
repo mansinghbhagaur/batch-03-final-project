@@ -3,6 +3,9 @@ import { Typography, IconButton, AppBar as MuiAppBar } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import MenuIcon from '@mui/icons-material/Menu';
 import { styled } from '@mui/material/styles';
+import { Sunny } from '@mui/icons-material';
+import { useContext } from 'react';
+import { store } from '../theme/context';
 
 const drawerWidth = 240;
 
@@ -29,6 +32,9 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const Navbar = ({ open, handleDrawerOpen }) => {
+      const { mode, toggleTheme } = useContext(store)
+
+      console.log(mode, "mode")
 
       return (
             <>
@@ -51,6 +57,9 @@ const Navbar = ({ open, handleDrawerOpen }) => {
                               <Typography variant="h6" noWrap component="div">
                                     Persistent drawer
                               </Typography>
+                              <IconButton>
+                                    <Sunny onClick={() => toggleTheme()} />
+                              </IconButton>
                         </Toolbar>
                   </AppBar>
             </>

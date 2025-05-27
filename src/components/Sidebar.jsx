@@ -46,16 +46,16 @@ const CollabeItemList = ({ links }) => {
 const Sidebar = () => {
       const Navlinks = [
             { icon: <Inbox />, label: 'Dashboard', route: '/' },
-            { icon: <Inbox />, label: 'Student', route: '/student' },
-            {
-                  icon: <Inbox />, label: 'User',
-                  children: [
-                        { icon: <Inbox />, label: 'User List', route: '/users' },
-                        { icon: <Inbox />, label: 'Student List', route: '/studentusers' },
-                  ]
-            },
-            { icon: <Inbox />, label: 'Todo List', route: '/todolist' },
-            { icon: <Inbox />, label: 'Todo List', route: '/todolist' },
+            { icon: <Inbox />, label: 'Todo Page', route: '/todopage' },
+            // {
+            //       icon: <Inbox />, label: 'User',
+            //       children: [
+            //             { icon: <Inbox />, label: 'User List', route: '/users' },
+            //             { icon: <Inbox />, label: 'Student List', route: '/studentusers' },
+            //       ]
+            // },
+            // { icon: <Inbox />, label: 'Todo List', route: '/todolist' },
+            // { icon: <Inbox />, label: 'Todo List', route: '/todolist' },
       ]
       return (
             <List>
