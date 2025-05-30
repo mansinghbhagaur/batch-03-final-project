@@ -11,7 +11,7 @@ import {
       TableRow
 } from '@mui/material'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-
+import * as Yup from 'yup';
 import { styled } from "@mui/material/styles"
 import { useFormik } from 'formik';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -58,11 +58,15 @@ const TodoPage = () => {
             setOpen(true);
       }
 
-      const { handleChange, handleSubmit, values, setValues, resetForm } = useFormik({
+      const { handleChange, handleSubmit, errors, values, setValues, resetForm } = useFormik({
             initialValues: {
                   title: "",
                   description: "",
             },
+            validationSchema: Yup.object({
+                  title: Yup.string().required("Title is required"),
+                  description: Yup.string().required("Description is required"),
+            }),
             onSubmit: (values, { resetForm }) => {
                   if (selectedRow) {
                         setFormData((prev) => prev?.map((item) => item.id === selectedRow.id ? { ...item, ...values } : item));
@@ -130,10 +134,10 @@ const TodoPage = () => {
                                     <form onSubmit={handleSubmit} id="ok">
                                           <Grid container spacing={2}>
                                                 <Grid size={{ xs: 12, sm: 6 }}>
-                                                      <TextField label="Title" fullWidth name="title" value={values?.title || ""} onChange={handleChange} />
+                                                      <TextField label="Title" error={errors.title} helperText={errors.title} fullWidth name="title" value={values?.title || ""} onChange={handleChange} />
                                                 </Grid>
                                                 <Grid size={{ xs: 12, sm: 6 }}>
-                                                      <TextField name="description" onChange={handleChange} value={values?.description || ""} label="Description" fullWidth />
+                                                      <TextField name="description" error={errors.description} helperText={errors.description} onChange={handleChange} value={values?.description || ""} label="Description" fullWidth />
                                                 </Grid>
                                           </Grid>
                                     </form>

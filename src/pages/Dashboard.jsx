@@ -1,5 +1,7 @@
 import { Typography, Grid, Box, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { ReuseButton } from "../components/ReuseButton";
+import { Add } from "@mui/icons-material";
 
 const Dashboard = () => {
       const Item = styled(Paper)(({ theme }) => ({
@@ -50,6 +52,18 @@ const Dashboard = () => {
                               </Item>
                         </Grid>
                   </Grid>
+
+                  <ReuseButton variant="contained" color="secondary" sx={{ borderRadius: '50%', width: '50px', height: '50px', margin: '20px' }}>
+                        <Add />
+                  </ReuseButton>
+
+                  <ReuseButton variant="contained" color="secondary" sx={{ margin: '20px' }}>
+                        Submit
+                  </ReuseButton>
+
+                  <ReuseButton variant="contained" color="warning" sx={{ margin: '20px' }}>
+                        No Thanks
+                  </ReuseButton>
             </>
       )
 }
