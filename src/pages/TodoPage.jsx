@@ -47,33 +47,58 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const TodoPage = () => {
       const [open, setOpen] = React.useState(false);
       const [formData, setFormData] = useState([]);
-      const [seletedRow, setSeletedRow] = useState(null);
+      const [selectedRow, setSelectedRow] = useState(null);
 
       const handleClose = () => {
             setOpen(false);
+            resetForm();
+
       }
       const handleOpen = () => {
             setOpen(true);
       }
 
-      const { handleChange, handleSubmit, values, setValues } = useFormik({
+      const { handleChange, handleSubmit, values, setValues, resetForm } = useFormik({
             initialValues: {
-                  title: '',
-                  description: '',
+                  title: "",
+                  description: "",
             },
             onSubmit: (values, { resetForm }) => {
-                  setFormData((prev) => [...prev, { id: Date.now(), ...values }]);// Add new item to the array
+                  if (selectedRow) {
+                        setFormData((prev) => prev?.map((item) => item.id === selectedRow.id ? { ...item, ...values } : item));
+                  } else {
+                        setFormData((prev) => [...prev, { id: Date.now(), ...values }]);// Add new item to the array
+                  }
                   resetForm();
                   setOpen(false)
             }
       })
 
 
-      // useEffect(() => {
-      //       setValues((prev) => ({ ...prev, seletedRow }))
-      // }, []);
+      useEffect(() => {
+            formData.length > 0 && localStorage.setItem("todos", JSON.stringify(formData));
+      }, [formData]);
 
-      console.log(seletedRow, "seletedRow")
+      useEffect(() => {
+            const saveData = JSON.parse(localStorage.getItem("todos") || []);
+            setFormData(saveData);
+      }, []);
+
+
+
+
+      console.log(values, "values")
+
+      useEffect(() => {
+            if (selectedRow) {
+                  setValues({
+                        title: selectedRow.title,
+                        description: selectedRow.description,
+                  })
+            }
+      }, [selectedRow]);
+
+      console.log(selectedRow, "seletedRow")
 
       // console.log(formData)
 
@@ -82,7 +107,7 @@ const TodoPage = () => {
                   <Grid container spacing={2}>
                         <Grid size={{ xs: 'auto' }} sx={{ display: 'flex', mb: 3, justifyContent: 'space-between', width: '250px' }}>
                               <Typography color='info' variant='h4' fontWeight='bold'>Todo Page</Typography>
-                              <Button variant="contained" color="secondary" onClick={handleOpen}><Add /></Button>
+                              <Button variant="contained" color="secondary" onClick={() => { handleOpen(), setSelectedRow(null) }}><Add /></Button>
                         </Grid>
 
                         {/* dailog box code */}
@@ -105,10 +130,10 @@ const TodoPage = () => {
                                     <form onSubmit={handleSubmit} id="ok">
                                           <Grid container spacing={2}>
                                                 <Grid size={{ xs: 12, sm: 6 }}>
-                                                      <TextField label="Title" fullWidth name="title" value={values.title} onChange={handleChange} />
+                                                      <TextField label="Title" fullWidth name="title" value={values?.title || ""} onChange={handleChange} />
                                                 </Grid>
                                                 <Grid size={{ xs: 12, sm: 6 }}>
-                                                      <TextField name="description" onChange={handleChange} value={values.description} label="Description" fullWidth />
+                                                      <TextField name="description" onChange={handleChange} value={values?.description || ""} label="Description" fullWidth />
                                                 </Grid>
                                           </Grid>
                                     </form>
@@ -131,14 +156,14 @@ const TodoPage = () => {
                               </TableHead>
                               <TableBody>
                                     {
-                                          formData.map((item, index) => (
+                                          formData?.map((item, index) => (
                                                 <StyledTableRow key={index}>
                                                       <StyledTableCell>{index + 1}</StyledTableCell>
                                                       <StyledTableCell>{item.title}</StyledTableCell>
                                                       <StyledTableCell>{item.description}</StyledTableCell>
                                                       <StyledTableCell>
                                                             <IconButton>
-                                                                  <Edit onClick={() => { setOpen(true), setSeletedRow(item) }} />
+                                                                  <Edit onClick={() => { setOpen(true), setSelectedRow(item) }} />
                                                             </IconButton>
                                                       </StyledTableCell>
                                                 </StyledTableRow>
